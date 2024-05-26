@@ -66,7 +66,7 @@ public class JwtGenerator {
                     .parseSignedClaims(token);
             return true;
         }catch (Exception e){
-            throw new AuthenticationCredentialsNotFoundException("JWT not valid");
+            return false;
         }
     }
 }
