@@ -1,4 +1,4 @@
-package com.library.Library;
+package com.library.Library.repository;
 
 import com.library.Library.entity.Book;
 import com.library.Library.repository.BookRepository;
@@ -23,10 +23,7 @@ public class BookRepositoryTest {
     @Test
     public void SaveBook_ReturnValidId(){
 
-        Book book = new Book();
-        book.setCategory(null);
-        book.setName("Harry Poteer");
-
+        Book book = Book.builder().category(null).name("Harry Potter").build();
         Book savedBook = bookRepository.save(book);
 
         Assertions.assertThat(savedBook).isNotNull();
