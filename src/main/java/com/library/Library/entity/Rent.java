@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name = "rents")
 @Data
-@NoArgsConstructor
 public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +30,9 @@ public class Rent {
     private Date end_date;
 
     @Column(name = "status")
-    private boolean status;
+    private boolean status;     // true: book is available
+
+    public Rent(){
+        this.status = true;
+    }
 }
