@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "books")
@@ -25,4 +27,7 @@ public class Book {
 
     @Column(name = "quantity")
     private Long quantity = 0L;
+
+    @OneToMany(mappedBy = "book")
+    private Set<Rent> rents;
 }
