@@ -26,22 +26,21 @@ public class RentService{
     private UserRepository userRepository;
 
     @Transactional
-    public void userRentBook(RentDTO rentDTO) throws BookNotFoundException, NoMoreBookException, UserNotFoundException {
+    public void userRentBook(Long bookId, RentDTO rentDTO) throws BookNotFoundException, NoMoreBookException, UserNotFoundException {
         // Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
         // Rent bookRent = rentRepository.findByBook(book).orElseThrow(BookNotFoundException::new);
         // LibraryUser user = userRepository.findByRent(bookRent).orElseThrow(UserNotFoundException::new);
         // LibraryUser user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        String bookName = rentDTO.getBookName();
-        Book book = bookRepository.findByName(bookName).orElseThrow(BookNotFoundException::new);
-        String username = rentDTO.getUsername();
-        LibraryUser user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        if (book.getQuantity() == 0){
-            throw new NoMoreBookException();
-        }
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+
         if(book.getQuantity() == 0){   // no more book
             throw new NoMoreBookException();
         }
+
+        String username = rentDTO.getUsername();
+        LibraryUser user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+
         Rent rent = new Rent();
         rent.setBook(book);
         rent.setUser(user);

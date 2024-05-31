@@ -32,30 +32,31 @@ public class RentServiceTest {
     // function should throw BookNotFoundException if book's id not exists
     @Test
     public void ThrowBookNotFoundException(){
+        Long bookId = 1L;
+
         RentDTO rentDTO = new RentDTO();
-        rentDTO.setBookName("Book");
         rentDTO.setUsername("User");
         rentDTO.setEndDate(new Date());
 
-        Mockito.when(bookRepository.findByName(rentDTO.getBookName())).thenReturn(Optional.empty());
+        Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
         BookNotFoundException exception = assertThrows(BookNotFoundException.class, () ->
-                rentService.userRentBook(rentDTO));
+                rentService.userRentBook(bookId, rentDTO));
 
         assertEquals("Book not found !", exception.getMessage());
     }
 
     @Test
     public void ThrowNotEnoughBookException(){
+        Long bookId = 1L;
         RentDTO rentDTO = new RentDTO();
-        rentDTO.setBookName("Book");
         rentDTO.setUsername("User");
         rentDTO.setEndDate(new Date());
 
-        Book book = Book.builder().name(rentDTO.getBookName()).category(null).id(1L).quantity(0L).build();
+        Book book = Book.builder().name("Harry Potter").category(null).id(bookId).quantity(0L).build();
 
-        Mockito.when(bookRepository.findByName(rentDTO.getBookName())).thenReturn(Optional.ofNullable(book));
+        Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.ofNullable(book));
         NoMoreBookException exception = assertThrows(NoMoreBookException.class, () ->
-                rentService.userRentBook(rentDTO));
+                rentService.userRentBook(bookId, rentDTO));
 
         assertEquals("No more book in stock", exception.getMessage());
     }
