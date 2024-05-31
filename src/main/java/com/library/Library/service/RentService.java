@@ -1,5 +1,6 @@
 package com.library.Library.service;
 
+import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
@@ -9,6 +10,7 @@ import com.library.Library.exception.books.UserNotFoundException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +24,34 @@ public class RentService{
     private RentRepository rentRepository;
     @Autowired
     private UserRepository userRepository;
-    public void userRentBook(Long bookId, Long userId) throws BookNotFoundException, NoMoreBookException, UserNotFoundException {
-        Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
-        Rent bookRent = rentRepository.findByBook(book).orElseThrow(BookNotFoundException::new);
-        LibraryUser user = userRepository.findByRent(bookRent).orElseThrow(UserNotFoundException::new);
+
+    @Transactional
+    public void userRentBook(RentDTO rentDTO) throws BookNotFoundException, NoMoreBookException, UserNotFoundException {
+        // Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+        // Rent bookRent = rentRepository.findByBook(book).orElseThrow(BookNotFoundException::new);
+        // LibraryUser user = userRepository.findByRent(bookRent).orElseThrow(UserNotFoundException::new);
+        // LibraryUser user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        String bookName = rentDTO.getBookName();
+        Book book = bookRepository.findByName(bookName).orElseThrow(BookNotFoundException::new);
+        String username = rentDTO.getUsername();
+        LibraryUser user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         if (book.getQuantity() == 0){
             throw new NoMoreBookException();
         }
-        if(bookRent != null && !bookRent.isStatus()){   // book is already borrowed
+        if(book.getQuantity() == 0){   // no more book
             throw new NoMoreBookException();
         }
         Rent rent = new Rent();
         rent.setBook(book);
         rent.setUser(user);
-        rent.setStart_date(new Date());
+        rent.setStartDate(new Date());
+        rent.setEndDate(rentDTO.getEndDate());
+        rent.setStatus(false);
+
+        book.setQuantity(book.getQuantity() - 1);
+
+        rentRepository.save(rent);
+        bookRepository.save(book);
     }
 }

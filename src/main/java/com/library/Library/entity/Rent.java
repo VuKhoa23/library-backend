@@ -24,10 +24,10 @@ public class Rent {
     private Book book;
 
     @Column(name = "start_date")
-    private Date start_date;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private Date end_date;
+    private Date endDate;
 
     @Column(name = "status")
     private boolean status;     // true: book is available

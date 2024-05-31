@@ -1,5 +1,6 @@
 package com.library.Library.service;
 
+import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.exception.books.BookNotFoundException;
 import com.library.Library.exception.books.NoMoreBookException;
@@ -13,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -30,25 +32,30 @@ public class RentServiceTest {
     // function should throw BookNotFoundException if book's id not exists
     @Test
     public void ThrowBookNotFoundException(){
-        Long bookId = 1L;
-        Long userId = 1L;
-        Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
+        RentDTO rentDTO = new RentDTO();
+        rentDTO.setBookName("Book");
+        rentDTO.setUsername("User");
+        rentDTO.setEndDate(new Date());
+
+        Mockito.when(bookRepository.findByName(rentDTO.getBookName())).thenReturn(Optional.empty());
         BookNotFoundException exception = assertThrows(BookNotFoundException.class, () ->
-                rentService.userRentBook(bookId, userId));
+                rentService.userRentBook(rentDTO));
 
         assertEquals("Book not found !", exception.getMessage());
     }
 
     @Test
-    void ThrowNotEnoughBookException(){
-        Long bookId = 1L;
-        Long userId = 1L;
+    public void ThrowNotEnoughBookException(){
+        RentDTO rentDTO = new RentDTO();
+        rentDTO.setBookName("Book");
+        rentDTO.setUsername("User");
+        rentDTO.setEndDate(new Date());
 
-        Book book = Book.builder().name("Harry Potter").category(null).id(bookId).quantity(0L).build();
+        Book book = Book.builder().name(rentDTO.getBookName()).category(null).id(1L).quantity(0L).build();
 
-        Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.ofNullable(book));
+        Mockito.when(bookRepository.findByName(rentDTO.getBookName())).thenReturn(Optional.ofNullable(book));
         NoMoreBookException exception = assertThrows(NoMoreBookException.class, () ->
-                rentService.userRentBook(bookId, userId));
+                rentService.userRentBook(rentDTO));
 
         assertEquals("No more book in stock", exception.getMessage());
     }
