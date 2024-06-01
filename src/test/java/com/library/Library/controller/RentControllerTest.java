@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RentController.class)
-@WithMockUser(username = "khoa",  roles= {"USER", "LIBRARIAN"})
+@WebMvcTest(value = RentController.class)
+@WithMockUser(username = "khoa",  roles= {"LIBRARIAN"})
 public class RentControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -60,7 +60,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("Book rented failed!"));
+                .andExpect(content().string("Book not found!"));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("Book rented failed!"));
+                .andExpect(content().string("Not enough book!"));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("Book rented failed!"));
+                .andExpect(content().string("User not found!"));
     }
 
     @Test
@@ -100,6 +100,17 @@ public class RentControllerTest {
 
         result.andExpect(status().isOk())
                 .andExpect(content().string("Book rented successfully!"));
+    }
+
+    @Test
+    public void rentBookAccessDenied() throws Exception {
+        ResultActions result = mockMvc.perform(post("/api/rent")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(rentDTO)));
+
+        result.andExpect(status().isForbidden())
+                .andExpect(content().string("Librarians are not allowed to access this resource!"));
     }
 }
 

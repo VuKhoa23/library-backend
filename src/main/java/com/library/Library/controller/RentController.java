@@ -26,8 +26,14 @@ public class RentController {
             rentService.userRentBook(rentDTO);
             return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
         }
-        catch(UserNotFoundException | NoMoreBookException | BookNotFoundException e){
-            return new ResponseEntity("Book rented failed!", HttpStatus.BAD_REQUEST);
+        catch(UserNotFoundException e){
+            return new ResponseEntity("User not found!", HttpStatus.BAD_REQUEST);
+        }
+        catch(NoMoreBookException e){
+            return new ResponseEntity("Not enough book!", HttpStatus.BAD_REQUEST);
+        }
+        catch(BookNotFoundException e){
+            return new ResponseEntity("Book not found!", HttpStatus.BAD_REQUEST);
         }
     }
 }
