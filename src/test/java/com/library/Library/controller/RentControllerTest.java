@@ -12,20 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RentController.class)
+@WithMockUser(username = "khoa",  roles= {"USER", "LIBRARIAN"})
 public class RentControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @MockBean
     private RentService rentService;
@@ -48,6 +55,7 @@ public class RentControllerTest {
         Mockito.doThrow(new BookNotFoundException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -60,6 +68,7 @@ public class RentControllerTest {
         Mockito.doThrow(new NoMoreBookException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -72,6 +81,7 @@ public class RentControllerTest {
         Mockito.doThrow(new UserNotFoundException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -84,6 +94,7 @@ public class RentControllerTest {
         Mockito.doNothing().when(rentService).userRentBook(rentDTO);    // assume rent successfully
 
         ResultActions result = mockMvc.perform(post("/api/rent")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -91,3 +102,4 @@ public class RentControllerTest {
                 .andExpect(content().string("Book rented successfully!"));
     }
 }
+
