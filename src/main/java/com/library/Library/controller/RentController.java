@@ -20,10 +20,10 @@ public class RentController {
         this.rentService = rentService;
     }
 
-    @PostMapping("/{bookId}")
-    public ResponseEntity<String> rentBook(@PathVariable Long bookId, @RequestBody RentDTO rentDTO) {
+    @PostMapping("")
+    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) {
         try{
-            rentService.userRentBook(bookId, rentDTO);
+            rentService.userRentBook(rentDTO);
             return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
         }
         catch(UserNotFoundException | NoMoreBookException | BookNotFoundException e){

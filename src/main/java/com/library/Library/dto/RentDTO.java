@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class RentDTO {
-    String username;
+    Long userId;
+    Long bookId;
     Date endDate;
 }
