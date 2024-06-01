@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/rent")
+@RequestMapping("api/rent")
 public class RentController {
     private RentService rentService;
 
