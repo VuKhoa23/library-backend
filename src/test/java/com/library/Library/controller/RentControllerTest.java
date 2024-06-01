@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -21,12 +23,13 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = RentController.class)
-@WithMockUser(username = "khoa",  roles= {"LIBRARIAN"})
+@AutoConfigureMockMvc(addFilters=false)
 public class RentControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -45,7 +48,7 @@ public class RentControllerTest {
     @BeforeEach
     public void setUp(){
         rentDTO = new RentDTO();
-        rentDTO.setUserId(1L);
+        rentDTO.setUserId(100L);
         rentDTO.setBookId(1L);
         rentDTO.setEndDate(new Date());
     }
@@ -104,8 +107,9 @@ public class RentControllerTest {
 
     @Test
     public void rentBookAccessDenied() throws Exception {
-        ResultActions result = mockMvc.perform(post("/api/rent")
+        ResultActions result = mockMvc.perform(post("/api/rent/test")
                 .with(csrf())
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 

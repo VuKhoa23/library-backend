@@ -16,24 +16,27 @@ public class RentController {
     private RentService rentService;
 
     @Autowired
-    public RentController(RentService rentService){
+    public RentController(RentService rentService) {
         this.rentService = rentService;
     }
 
     @PostMapping("")
     public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) {
-        try{
+        try {
             rentService.userRentBook(rentDTO);
             return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
-        }
-        catch(UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return new ResponseEntity("User not found!", HttpStatus.BAD_REQUEST);
-        }
-        catch(NoMoreBookException e){
+        } catch (NoMoreBookException e) {
             return new ResponseEntity("Not enough book!", HttpStatus.BAD_REQUEST);
-        }
-        catch(BookNotFoundException e){
+        } catch (BookNotFoundException e) {
             return new ResponseEntity("Book not found!", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> test() {
+
+        return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
     }
 }

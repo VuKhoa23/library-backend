@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers("/allowUser").hasAuthority("USER");
-                    auth.requestMatchers("/api/rent").hasAuthority("USER");
+                    auth.requestMatchers("/api/rent/**").hasAuthority("USER");
                     auth.anyRequest().permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
