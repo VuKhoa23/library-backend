@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -32,18 +33,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         HttpSecurity httpSecurity = http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> {
-                    exception.authenticationEntryPoint(jwtAuthEntryPoint);
-                    exception.accessDeniedHandler((request, response, accessDeniedException) -> {
-                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        response.getWriter().write("Librarians are not allowed to access this resource!");
-                    });
-                })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
-                    auth.requestMatchers("/allowUser").hasAuthority("USER");
                     auth.requestMatchers("/api/rent/**").hasAuthority("USER");
+                    auth.requestMatchers(HttpMethod.POST, "/api/books/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, "/api/books/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.PATCH, "/api/books/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/api/categories/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.PATCH, "/api/categories/**").hasAuthority("ADMIN");
                     auth.anyRequest().permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
