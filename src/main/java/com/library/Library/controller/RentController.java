@@ -1,9 +1,9 @@
 package com.library.Library.controller;
 
 import com.library.Library.dto.RentDTO;
-import com.library.Library.exception.books.BookNotFoundException;
-import com.library.Library.exception.books.NoMoreBookException;
-import com.library.Library.exception.books.UserNotFoundException;
+import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.NoMoreBookException;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,16 +21,16 @@ public class RentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) {
+    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
         try {
             rentService.userRentBook(rentDTO);
             return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity("User not found!", HttpStatus.BAD_REQUEST);
+            throw new UserNotFoundException();
         } catch (NoMoreBookException e) {
-            return new ResponseEntity("Not enough book!", HttpStatus.BAD_REQUEST);
+            throw new NoMoreBookException();
         } catch (BookNotFoundException e) {
-            return new ResponseEntity("Book not found!", HttpStatus.BAD_REQUEST);
+            throw new BookNotFoundException();
         }
     }
 

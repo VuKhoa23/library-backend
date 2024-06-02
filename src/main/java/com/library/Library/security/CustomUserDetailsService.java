@@ -27,10 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LibraryUser user = userRepository.findByUsername(username).orElseThrow(()->{
-            new UsernameNotFoundException("Username not found !");
+        LibraryUser user = userRepository.findByUsername(username).orElse(null);
+        if (user == null){
             return null;
-        });
+        }
         return new User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 

@@ -4,19 +4,20 @@ import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
-import com.library.Library.exception.books.BookNotFoundException;
-import com.library.Library.exception.books.NoMoreBookException;
-import com.library.Library.exception.books.UserNotFoundException;
+import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.NoMoreBookException;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
+@Transactional
 public class RentService{
     @Autowired
     private BookRepository bookRepository;

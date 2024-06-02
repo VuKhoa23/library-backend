@@ -4,9 +4,9 @@ import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
-import com.library.Library.exception.books.BookNotFoundException;
-import com.library.Library.exception.books.NoMoreBookException;
-import com.library.Library.exception.books.UserNotFoundException;
+import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.NoMoreBookException;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
@@ -62,7 +62,8 @@ public class RentServiceTest {
         rentDTO.setBookId(1L);
         rentDTO.setEndDate(new Date());
 
-        Book book = Book.builder().name("Harry Potter").category(null).id(rentDTO.getBookId()).quantity(0L).build();
+        Book book = new Book("Harry Potter", null);
+        book.setQuantity(0L);
 
         Mockito.when(bookRepository.findById(rentDTO.getBookId())).thenReturn(Optional.ofNullable(book));
         NoMoreBookException exception = assertThrows(NoMoreBookException.class, () ->
@@ -78,7 +79,8 @@ public class RentServiceTest {
         rentDTO.setBookId(1L);
         rentDTO.setEndDate(new Date());
 
-        Book book = Book.builder().name("Harry Potter").category(null).id(rentDTO.getBookId()).quantity(5L).build();
+        Book book = new Book("Harry Potter", null);
+        book.setQuantity(5L);
 
         Mockito.when(bookRepository.findById(rentDTO.getBookId())).thenReturn(Optional.ofNullable(book));
         Mockito.when(userRepository.findById(rentDTO.getUserId())).thenReturn(Optional.empty());
@@ -95,12 +97,9 @@ public class RentServiceTest {
         rentDTO.setBookId(1L);
         rentDTO.setEndDate(new Date());
 
-        Book book = Book.builder()
-                .id(rentDTO.getBookId())
-                .name("Harry Potter")
-                .category(null)
-                .quantity(5L)
-                .build();
+        Book book = new Book("Harry Potter", null);
+        book.setQuantity(5L);
+        book.setId(rentDTO.getBookId());
 
         LibraryUser user = new LibraryUser();
         user.setUsername("John Doe");

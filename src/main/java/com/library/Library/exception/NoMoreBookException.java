@@ -1,4 +1,4 @@
-package com.library.Library.exception.books;
+package com.library.Library.exception;
 
 public class NoMoreBookException extends Exception{
     public NoMoreBookException(){

@@ -7,7 +7,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.Optional;
 
-@RepositoryRestResource
 public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findByName(String name);
 }
