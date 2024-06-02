@@ -1,6 +1,7 @@
 package com.library.Library.advice;
 
 import com.library.Library.dto.ErrorResponseDTO;
+import com.library.Library.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,6 +26,31 @@ public class ExceptionHandlingController {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotSupported(HttpRequestMethodNotSupportedException e) {
         return new ResponseEntity<>(ErrorResponseDTO.builder().message("Method not allowed.").build(), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBookNotFound(BookNotFoundException e) {
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Book not found!").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UserNotFoundException e) {
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("User not found!").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleCategoryNotFound(CategoryNotFoundException e) {
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Category not found.").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoMoreBookException.class)
+    public ResponseEntity<ErrorResponseDTO> handleCategoryNotFound(NoMoreBookException e) {
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Not enough book!").build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidRequestParameterException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidParameter(InvalidRequestParameterException e) {
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
     }
 }
 

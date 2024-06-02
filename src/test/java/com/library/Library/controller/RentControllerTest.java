@@ -22,8 +22,7 @@ import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = RentController.class)
 @AutoConfigureMockMvc(addFilters=false)
@@ -60,7 +59,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("Book not found!"));
+                .andExpect(jsonPath("$.message").value("Book not found!"));
     }
 
     @Test
@@ -73,7 +72,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("Not enough book!"));
+                .andExpect(jsonPath("$.message").value("Not enough book!"));
     }
 
     @Test
@@ -86,7 +85,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         resultActions.andExpect(status().isBadRequest())
-                .andExpect(content().string("User not found!"));
+                .andExpect(jsonPath("$.message").value("User not found!"));
     }
 
     @Test

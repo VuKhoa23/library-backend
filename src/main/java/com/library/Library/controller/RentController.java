@@ -21,16 +21,16 @@ public class RentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) {
+    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
         try {
             rentService.userRentBook(rentDTO);
             return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity("User not found!", HttpStatus.BAD_REQUEST);
+            throw new UserNotFoundException();
         } catch (NoMoreBookException e) {
-            return new ResponseEntity("Not enough book!", HttpStatus.BAD_REQUEST);
+            throw new NoMoreBookException();
         } catch (BookNotFoundException e) {
-            return new ResponseEntity("Book not found!", HttpStatus.BAD_REQUEST);
+            throw new BookNotFoundException();
         }
     }
 
