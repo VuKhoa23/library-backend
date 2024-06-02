@@ -1,13 +1,13 @@
 package com.library.Library.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class AuthResponseDTO {
     private String accessToken;
-    private String tokenType = "Bearer ";
+    private String tokenType;
+    private String message;
 
-    public AuthResponseDTO(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }
