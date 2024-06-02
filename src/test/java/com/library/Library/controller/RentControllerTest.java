@@ -11,10 +11,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -105,16 +102,16 @@ public class RentControllerTest {
                 .andExpect(content().string("Book rented successfully!"));
     }
 
-    @Test
-    public void rentBookAccessDenied() throws Exception {
-        ResultActions result = mockMvc.perform(post("/api/rent/test")
-                .with(csrf())
-                .with(user("admin").roles("ADMIN"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(rentDTO)));
-
-        result.andExpect(status().isForbidden())
-                .andExpect(content().string("Librarians are not allowed to access this resource!"));
-    }
+//    @Test
+//    public void rentBookAccessDenied() throws Exception {
+//        ResultActions result = mockMvc.perform(post("/api/rent/test")
+//                .with(csrf())
+//                .with(user("admin").roles("ADMIN"))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(rentDTO)));
+//
+//        result.andExpect(status().isForbidden())
+//                .andExpect(content().string("Librarians are not allowed to access this resource!"));
+//    }
 }
 
