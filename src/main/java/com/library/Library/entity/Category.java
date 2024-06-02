@@ -1,5 +1,6 @@
 package com.library.Library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -23,5 +24,6 @@ public class Category {
     String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @JsonIgnore
     Set<Book> books;
 }

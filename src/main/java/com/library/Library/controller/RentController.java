@@ -1,9 +1,9 @@
 package com.library.Library.controller;
 
 import com.library.Library.dto.RentDTO;
-import com.library.Library.exception.books.BookNotFoundException;
-import com.library.Library.exception.books.NoMoreBookException;
-import com.library.Library.exception.books.UserNotFoundException;
+import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.NoMoreBookException;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
