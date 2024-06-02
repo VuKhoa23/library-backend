@@ -30,17 +30,17 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleBookNotFound(BookNotFoundException e) {
-        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Book not found!").build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Book not found!").build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UserNotFoundException e) {
-        return new ResponseEntity<>(ErrorResponseDTO.builder().message("User not found!").build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("User not found!").build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleCategoryNotFound(CategoryNotFoundException e) {
-        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Category not found.").build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ErrorResponseDTO.builder().message("Category not found.").build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NoMoreBookException.class)
