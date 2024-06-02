@@ -101,17 +101,5 @@ public class RentControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(content().string("Book rented successfully!"));
     }
-
-//    @Test
-//    public void rentBookAccessDenied() throws Exception {
-//        ResultActions result = mockMvc.perform(post("/api/rent/test")
-//                .with(csrf())
-//                .with(user("admin").roles("ADMIN"))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(rentDTO)));
-//
-//        result.andExpect(status().isForbidden())
-//                .andExpect(content().string("Librarians are not allowed to access this resource!"));
-//    }
 }
 
