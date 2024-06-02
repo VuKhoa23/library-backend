@@ -6,4 +6,4 @@
 | Method | Route  | Input | Output | Error | Description
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | POST  | /api/auth/register  | {<br>"username": String<br>"password": String <br>}  | "User registered" <br> - *HTTP Status: 200*  | "Username is already taken" - *HTTP Status: 400* <br> | User register |
-| POST  | /api/auth/login  | {<br>"username": String<br>"password": String <br>}  | {<br>"accessToken": Token <br> "tokenType": "Bearer " <br>}- *HTTP Status: 200*  | Update later | User register |
+| POST  | /api/auth/login  | {<br>"username": String<br>"password": String <br>}  | {<br>"accessToken": Token <br> "tokenType": "Bearer " <br> "message": "Success" <br>}- *HTTP Status: 200*  |  {<br>"message": "Bad credentials" <br> } - *HTTP Status: 400* | User register |
