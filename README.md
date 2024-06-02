@@ -1,5 +1,5 @@
 ### POST/PUT/PATCH APIs of books, categories will return 403 FORBIDDEN if a USER tried to call these APIs. ONLY ADMIN can call POST/PUT/PATCH on books, categories
-### . ADMIN cannot POST a rent - which will result to a 403 FORBIDDEN
+### ADMIN cannot POST a rent - which will result to a 403 FORBIDDEN. ONLY USER can create a rent
 ## Renting API
 
 | Method | Route     | Input                                                           | Output _____________________                          | Error                                          | Description              
