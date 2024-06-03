@@ -46,9 +46,9 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<ResponseDTO> register(@RequestBody RegisterDTO registerDTO) {
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
-            return new ResponseEntity<>(ErrorResponseDTO.builder().message("Username is already taken!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ResponseDTO.builder().message("Username is already taken!").build(), HttpStatus.BAD_REQUEST);
         } else {
             LibraryUser user = new LibraryUser();
             user.setUsername(registerDTO.getUsername());
@@ -57,7 +57,7 @@ public class AuthController {
             user.setRoles(Collections.singletonList(role));
 
             userRepository.save(user);
-            return new ResponseEntity<>(SuccessResponseDTO.builder().message("User registered successfully!"), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseDTO.builder().message("User registered successfully!").build(), HttpStatus.OK);
         }
     }
 
