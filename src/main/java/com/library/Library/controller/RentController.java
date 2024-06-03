@@ -1,14 +1,22 @@
 package com.library.Library.controller;
 
+import com.library.Library.dto.AuthResponseDTO;
 import com.library.Library.dto.RentDTO;
+import com.library.Library.dto.SuccessResponseDTO;
+import com.library.Library.entity.Book;
+import com.library.Library.entity.Rent;
 import com.library.Library.exception.BookNotFoundException;
 import com.library.Library.exception.NoMoreBookException;
 import com.library.Library.exception.UserNotFoundException;
+import com.library.Library.service.BookService;
 import com.library.Library.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/rent")
@@ -21,15 +29,26 @@ public class RentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> rentBook(@RequestBody RentDTO rentDTO) throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
+    public ResponseEntity<SuccessResponseDTO> rentBook(@RequestBody RentDTO rentDTO) throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
         try {
             rentService.userRentBook(rentDTO);
-            return new ResponseEntity("Book rented successfully!", HttpStatus.OK);
+            return new ResponseEntity<>(SuccessResponseDTO.builder().message("Book rented successfully!").build(), HttpStatus.OK);
         } catch (UserNotFoundException e) {
             throw new UserNotFoundException();
         } catch (NoMoreBookException e) {
             throw new NoMoreBookException();
         } catch (BookNotFoundException e) {
+            throw new BookNotFoundException();
+        }
+    }
+
+    @GetMapping("{userId}")
+    public @ResponseBody List<Book> getRentedBooks(@PathVariable("userId") Long userId) throws BookNotFoundException {
+        try{
+            List<Book> books = rentService.getRentedBooks(userId);
+            return books;
+        }
+        catch (BookNotFoundException e) {
             throw new BookNotFoundException();
         }
     }

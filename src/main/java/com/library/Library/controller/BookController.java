@@ -2,6 +2,7 @@ package com.library.Library.controller;
 
 import com.library.Library.dto.BookDTO;
 import com.library.Library.entity.Book;
+import com.library.Library.entity.Rent;
 import com.library.Library.exception.BookNotFoundException;
 import com.library.Library.exception.CategoryNotFoundException;
 import com.library.Library.exception.InvalidRequestParameterException;

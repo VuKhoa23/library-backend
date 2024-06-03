@@ -1,9 +1,7 @@
 package com.library.Library.controller;
 
 
-import com.library.Library.dto.AuthResponseDTO;
-import com.library.Library.dto.LoginDTO;
-import com.library.Library.dto.RegisterDTO;
+import com.library.Library.dto.*;
 import com.library.Library.entity.Role;
 import com.library.Library.repository.RoleRepository;
 import com.library.Library.repository.UserRepository;
@@ -48,9 +46,9 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
-            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorResponseDTO.builder().message("Username is already taken!"), HttpStatus.BAD_REQUEST);
         } else {
             LibraryUser user = new LibraryUser();
             user.setUsername(registerDTO.getUsername());
@@ -59,7 +57,7 @@ public class AuthController {
             user.setRoles(Collections.singletonList(role));
 
             userRepository.save(user);
-            return new ResponseEntity<>("User registered", HttpStatus.OK);
+            return new ResponseEntity<>(SuccessResponseDTO.builder().message("User registered successfully!"), HttpStatus.OK);
         }
     }
 

@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -52,5 +54,25 @@ public class RentService{
 
         rentRepository.save(rent);
         bookRepository.save(book);
+    }
+
+    public List<Rent> findByBookId(Long bookId){
+        return rentRepository.findByBookId(bookId);
+    }
+
+    public List<Rent> findByUserId(Long userId){
+        return rentRepository.findByBookId(userId);
+    }
+
+    public List<Book> getRentedBooks(Long userId) throws BookNotFoundException {
+        List<Rent> rents = rentRepository.findByUserId(userId);
+        List<Book> books = new ArrayList<>();
+        for(Rent rent : rents){
+            books.add(rent.getBook());
+        }
+        if(books.size() == 0){
+            throw new BookNotFoundException();
+        }
+        return books;
     }
 }
