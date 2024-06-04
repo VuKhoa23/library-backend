@@ -58,7 +58,7 @@ public class RentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
-        resultActions.andExpect(status().isBadRequest())
+        resultActions.andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Book not found!"));
     }
 
@@ -84,7 +84,7 @@ public class RentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
-        resultActions.andExpect(status().isBadRequest())
+        resultActions.andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("User not found!"));
     }
 
@@ -98,7 +98,7 @@ public class RentControllerTest {
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
         result.andExpect(status().isOk())
-                .andExpect(content().string("Book rented successfully!"));
+                .andExpect(jsonPath("$.message").value("Book rented successfully!"));
     }
 }
 
