@@ -56,7 +56,7 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(GetRentedBookDeniedException.class)
     public ResponseEntity<ResponseDTO> handleGetRentedBookDenied(GetRentedBookDeniedException e) {
-        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
