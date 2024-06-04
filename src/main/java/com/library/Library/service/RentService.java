@@ -90,7 +90,7 @@ public class RentService{
             }
             return books;
         } else {
-            throw new GetRentedBookDeniedException("You are not allowed to view books rented by this users.");
+            throw new GetRentedBookDeniedException("You are not allowed to view books rented by this user.");
         }
     }
 }

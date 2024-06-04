@@ -15,6 +15,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Category {
+    public Category(String name){
+        this.id = id;
+        this.name = name;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

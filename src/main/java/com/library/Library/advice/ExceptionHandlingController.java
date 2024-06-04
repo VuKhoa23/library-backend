@@ -41,7 +41,7 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ResponseDTO> handleCategoryNotFound(CategoryNotFoundException e) {
-        return new ResponseEntity<>(ResponseDTO.builder().message("Category not found.").build(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ResponseDTO.builder().message("Category not found!").build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NoMoreBookException.class)
