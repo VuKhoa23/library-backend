@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = RentController.class)
-@AutoConfigureMockMvc(addFilters = false)
 public class RentControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -51,6 +51,7 @@ public class RentControllerTest {
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
+                .with(user("user").roles("ADMIN", "USER"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -64,6 +65,7 @@ public class RentControllerTest {
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
+                .with(user("user").roles("ADMIN", "USER"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -77,6 +79,7 @@ public class RentControllerTest {
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
+                .with(user("user").roles("ADMIN", "USER"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -90,6 +93,7 @@ public class RentControllerTest {
 
         ResultActions result = mockMvc.perform(post("/api/rent")
                 .with(csrf())
+                .with(user("user").roles("ADMIN", "USER"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
