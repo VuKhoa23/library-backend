@@ -5,6 +5,7 @@ import com.library.Library.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,8 +55,13 @@ public class ExceptionHandlingController {
     }
 
     @ExceptionHandler(GetRentedBookDeniedException.class)
-    public ResponseEntity<ResponseDTO> handleGetRentedBookDeniedException(GetRentedBookDeniedException e) {
+    public ResponseEntity<ResponseDTO> handleGetRentedBookDenied(GetRentedBookDeniedException e) {
         return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ResponseDTO> handleAdminCannotRentBook(AccessDeniedException e) {
+        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.FORBIDDEN);
     }
 }
 

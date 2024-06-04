@@ -4,10 +4,7 @@ import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
-import com.library.Library.exception.BookNotFoundException;
-import com.library.Library.exception.GetRentedBookDeniedException;
-import com.library.Library.exception.NoMoreBookException;
-import com.library.Library.exception.UserNotFoundException;
+import com.library.Library.exception.*;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
@@ -38,6 +35,17 @@ public class RentService{
         // Rent bookRent = rentRepository.findByBook(book).orElseThrow(BookNotFoundException::new);
         // LibraryUser user = userRepository.findByRent(bookRent).orElseThrow(UserNotFoundException::new);
         // LibraryUser user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
+
+        boolean isAdmin = currentUser.getRoles().stream()
+                .anyMatch(role -> "ADMIN".equals(role.getName()));
+
+//        if (isAdmin) {
+//            throw new AccessDeniedException("Admin cannot rent books!");
+//        }
 
         Book book = bookRepository.findById(rentDTO.getBookId()).orElseThrow(BookNotFoundException::new);
 
@@ -73,7 +81,8 @@ public class RentService{
         String currentUsername = authentication.getName();
         LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
 
-        if (currentUser.getId().equals(userId) || currentUser.getRoles().contains("ADMIN")) {
+        System.out.println("role " + currentUser.getRoles());
+        if (currentUser.getId().equals(userId) || currentUser.getRoles().stream().anyMatch(role -> "ADMIN".equals(role.getName()))) {
             List<Book> books = new ArrayList<>();
             List<Rent> rents = rentRepository.findByUserId(userId);
             for (Rent rent : rents) {

@@ -4,6 +4,7 @@ import com.library.Library.dto.RentDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
+import com.library.Library.exception.AdminCannotRentBookException;
 import com.library.Library.exception.BookNotFoundException;
 import com.library.Library.exception.NoMoreBookException;
 import com.library.Library.exception.UserNotFoundException;
@@ -91,7 +92,7 @@ public class RentServiceTest {
     }
 
     @Test
-    public void RentBookSuccessfully() throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
+    public void RentBookSuccessfully() throws UserNotFoundException, NoMoreBookException, BookNotFoundException, AdminCannotRentBookException {
         RentDTO rentDTO = new RentDTO();
         rentDTO.setUserId(1L);
         rentDTO.setBookId(1L);
