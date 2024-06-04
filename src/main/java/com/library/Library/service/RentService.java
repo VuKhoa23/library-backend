@@ -5,12 +5,16 @@ import com.library.Library.entity.Book;
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Rent;
 import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.GetRentedBookDeniedException;
 import com.library.Library.exception.NoMoreBookException;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,15 +68,20 @@ public class RentService{
         return rentRepository.findByBookId(userId);
     }
 
-    public List<Book> getRentedBooks(Long userId) throws BookNotFoundException {
-        List<Rent> rents = rentRepository.findByUserId(userId);
-        List<Book> books = new ArrayList<>();
-        for(Rent rent : rents){
-            books.add(rent.getBook());
+    public List<Book> getRentedBooks(Long userId) throws UserNotFoundException, GetRentedBookDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
+
+        if (currentUser.getId().equals(userId) || currentUser.getRoles().contains("ADMIN")) {
+            List<Book> books = new ArrayList<>();
+            List<Rent> rents = rentRepository.findByUserId(userId);
+            for (Rent rent : rents) {
+                books.add(rent.getBook());
+            }
+            return books;
+        } else {
+            throw new GetRentedBookDeniedException("You are not allowed to view books rented by this users.");
         }
-        if(books.size() == 0){
-            throw new BookNotFoundException();
-        }
-        return books;
     }
 }

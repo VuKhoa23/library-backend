@@ -4,12 +4,15 @@ import com.library.Library.dto.RentDTO;
 import com.library.Library.dto.ResponseDTO;
 import com.library.Library.entity.Book;
 import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.GetRentedBookDeniedException;
 import com.library.Library.exception.NoMoreBookException;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,13 +42,13 @@ public class RentController {
     }
 
     @GetMapping("{userId}")
-    public @ResponseBody List<Book> getRentedBooks(@PathVariable("userId") Long userId) throws BookNotFoundException {
+    public @ResponseBody List<Book> getRentedBooks(@PathVariable("userId") Long userId) throws UserNotFoundException, GetRentedBookDeniedException {
         try{
             List<Book> books = rentService.getRentedBooks(userId);
             return books;
         }
-        catch (BookNotFoundException e) {
-            throw new BookNotFoundException();
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException();
         }
     }
 
