@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,7 +38,9 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
-                    auth.requestMatchers("/api/rent/**").hasAuthority("USER");
+                    // auth.requestMatchers("/api/rent/**").hasAuthority("USER");
+                    auth.requestMatchers(HttpMethod.POST, "/api/rent/**").hasAuthority("USER");
+                    auth.requestMatchers(HttpMethod.GET, "/api/rent/**").hasAnyAuthority("USER", "ADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/api/books/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.PUT, "/api/books/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.PATCH, "/api/books/**").hasAuthority("ADMIN");

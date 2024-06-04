@@ -52,5 +52,10 @@ public class ExceptionHandlingController {
     public ResponseEntity<ResponseDTO> handleInvalidParameter(InvalidRequestParameterException e) {
         return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(GetRentedBookDeniedException.class)
+    public ResponseEntity<ResponseDTO> handleGetRentedBookDeniedException(GetRentedBookDeniedException e) {
+        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+    }
 }
 
