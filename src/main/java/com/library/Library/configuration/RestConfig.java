@@ -12,5 +12,7 @@ public class RestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         config.exposeIdsFor(Category.class);
+        cors.addMapping("/**")
+                .allowedOrigins("http://localhost:3000");
     }
 }
