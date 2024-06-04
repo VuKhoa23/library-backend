@@ -5,6 +5,7 @@
 | Method | Route     | Input _______________________                                                           | Output _____________________                          | Error                                          | Description              
 |--------|-----------|-----------------------------------------------------------------|-------------------------------------------------------|------------------------------------------------|--------------------------|
 | POST   | /api/rent | {<br>"userId": Long,<br>"bookId": Long,<br>"endDate": Date<br>} | "Book rented successfully!" <br> - *HTTP Status: 200* | 400 BAD REQUEST AND 403 FORBIDDEN WITH MESSAGE | Only user can rent books |
+| GET   | /api/rent/:userId |  | List of rented/renting books | 404 NOT FOUND WITH MESSAGE  | Get all rented/renting books |
 
 ## Auth API
 
