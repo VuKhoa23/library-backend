@@ -40,7 +40,7 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ResponseDTO> handleCategoryNotFound(CategoryNotFoundException e) {
-        return new ResponseEntity<>(ResponseDTO.builder().message("Category not found.").build(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ResponseDTO.builder().message("Category not found!").build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NoMoreBookException.class)
@@ -55,7 +55,7 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(GetRentedBookDeniedException.class)
     public ResponseEntity<ResponseDTO> handleGetRentedBookDeniedException(GetRentedBookDeniedException e) {
-        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDTO.builder().message(e.getMessage()).build(), HttpStatus.FORBIDDEN);
     }
 }
 
