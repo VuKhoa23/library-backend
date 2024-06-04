@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Category {
-    public Category(Long id, String name){
+    public Category(String name){
         this.id = id;
         this.name = name;
     }
