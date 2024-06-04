@@ -3,14 +3,12 @@ package com.library.Library.controller;
 import com.library.Library.dto.RentDTO;
 import com.library.Library.dto.ResponseDTO;
 import com.library.Library.entity.Book;
-import com.library.Library.exception.BookNotFoundException;
-import com.library.Library.exception.GetRentedBookDeniedException;
-import com.library.Library.exception.NoMoreBookException;
-import com.library.Library.exception.UserNotFoundException;
+import com.library.Library.exception.*;
 import com.library.Library.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,7 @@ public class RentController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> rentBook(@RequestBody RentDTO rentDTO) throws UserNotFoundException, NoMoreBookException, BookNotFoundException {
         try {
             rentService.userRentBook(rentDTO);
@@ -38,10 +37,13 @@ public class RentController {
             throw new NoMoreBookException();
         } catch (BookNotFoundException e) {
             throw new BookNotFoundException();
+        } catch (AccessDeniedException e) {
+            throw new AccessDeniedException(e.getMessage());
         }
     }
 
     @GetMapping("{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public @ResponseBody List<Book> getRentedBooks(@PathVariable("userId") Long userId) throws UserNotFoundException, GetRentedBookDeniedException {
         try{
             List<Book> books = rentService.getRentedBooks(userId);
