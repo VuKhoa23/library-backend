@@ -117,4 +117,9 @@ public class RentServiceTest {
 
         assertEquals(4L, book.getQuantity().longValue());
     }
+
+    @Test
+    public void GetRentedBookDenied(){
+
+    }
 }

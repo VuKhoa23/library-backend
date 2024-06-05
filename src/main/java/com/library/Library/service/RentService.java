@@ -36,17 +36,6 @@ public class RentService{
         // LibraryUser user = userRepository.findByRent(bookRent).orElseThrow(UserNotFoundException::new);
         // LibraryUser user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
-
-        boolean isAdmin = currentUser.getRoles().stream()
-                .anyMatch(role -> "ADMIN".equals(role.getName()));
-
-//        if (isAdmin) {
-//            throw new AccessDeniedException("Admin cannot rent books!");
-//        }
-
         Book book = bookRepository.findById(rentDTO.getBookId()).orElseThrow(BookNotFoundException::new);
 
         if(book.getQuantity() == 0){   // no more book
