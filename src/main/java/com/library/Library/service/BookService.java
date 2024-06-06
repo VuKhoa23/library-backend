@@ -6,7 +6,6 @@ import com.library.Library.entity.Category;
 import com.library.Library.exception.BookNotFoundException;
 import com.library.Library.exception.CategoryNotFoundException;
 import com.library.Library.exception.InvalidRequestParameterException;
-import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
