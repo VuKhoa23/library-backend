@@ -9,9 +9,6 @@ import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +25,8 @@ public class RentService{
     private RentRepository rentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CheckAccessService checkAccessService;
 
     @Transactional
     public void userRentBook(RentDTO rentDTO) throws BookNotFoundException, NoMoreBookException, UserNotFoundException {
@@ -66,12 +65,10 @@ public class RentService{
     }
 
     public List<Book> getRentedBooks(Long userId) throws UserNotFoundException, GetRentedBookDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
+        LibraryUser currentUser = checkAccessService.getCurrentUser();
 
         System.out.println("role " + currentUser.getRoles());
-        if (currentUser.getId().equals(userId) || currentUser.getRoles().stream().anyMatch(role -> "ADMIN".equals(role.getName()))) {
+        if (currentUser.getId().equals(userId) || checkAccessService.isAdmin(currentUser)) {
             List<Book> books = new ArrayList<>();
             List<Rent> rents = rentRepository.findByUserId(userId);
             for (Rent rent : rents) {
@@ -79,7 +76,7 @@ public class RentService{
             }
             return books;
         } else {
-            throw new GetRentedBookDeniedException("You are not allowed to view books rented by this user.");
+            throw new GetRentedBookDeniedException("You are not allowed to view books rented by this user!");
         }
     }
 }

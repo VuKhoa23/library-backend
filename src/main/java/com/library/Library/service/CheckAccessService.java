@@ -1,4 +1,4 @@
-package com.library.Library.service.helper;
+package com.library.Library.service;
 
 import com.library.Library.entity.LibraryUser;
 import com.library.Library.exception.UserNotFoundException;
@@ -10,14 +10,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CheckAccessService {
-    @Autowired
     private UserRepository userRepository;
 
-    public boolean isAccess() throws UserNotFoundException {
+    @Autowired
+    public CheckAccessService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public LibraryUser getCurrentUser() throws UserNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
-        LibraryUser currentUser = userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
+    }
 
-        return true;
+    public boolean isAdmin(LibraryUser user) {
+        return user.getRoles().stream().anyMatch(role -> "ADMIN".equals(role.getName()));
     }
 }
+
