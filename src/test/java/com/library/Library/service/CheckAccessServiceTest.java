@@ -68,7 +68,11 @@ public class CheckAccessServiceTest {
     @Test
     public void ReturnTrue_IsAdmin(){
         LibraryUser user = new LibraryUser();
-        user.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        adminRole.setName("ADMIN");
+//        user.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
+        user.setRoles(List.of(adminRole));
 
         boolean isAdmin = checkAccessService.isAdmin(user);
         assertEquals(isAdmin, true);
@@ -77,8 +81,11 @@ public class CheckAccessServiceTest {
     @Test
     public void ReturnFalse_IsNotAdmin(){
         LibraryUser user = new LibraryUser();
-        user.setRoles(List.of(Role.builder().name(("USER")).build()));
-
+        Role userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName("USER");
+//        user.setRoles(List.of(Role.builder().name(("USER")).build()));
+        user.setRoles(List.of(userRole));
         boolean isAdmin = checkAccessService.isAdmin(user);
         assertEquals(isAdmin, false);
     }

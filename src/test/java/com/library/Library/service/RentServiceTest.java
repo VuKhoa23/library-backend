@@ -119,9 +119,14 @@ public class RentServiceTest {
         Long requestedUserId = 1L;
         Long currentUserId = 2L;
 
+        Role userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName("USER");
+
         LibraryUser currentUser = new LibraryUser();
         currentUser.setId(currentUserId);
-        currentUser.setRoles(List.of(Role.builder().name(("USER")).build()));
+//        currentUser.setRoles(List.of(Role.builder().name(("USER")).build()));
+        currentUser.setRoles(List.of(userRole));
 
         when(checkAccessService.getCurrentUser()).thenReturn(currentUser);
         when(checkAccessService.isAdmin(currentUser)).thenReturn(false);
@@ -137,9 +142,14 @@ public class RentServiceTest {
         Long userId = 1L;
         Long adminId = 2L;
 
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        adminRole.setName("ADMIN");
+
         LibraryUser admin = new LibraryUser();
         admin.setId(adminId);
-        admin.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
+//        admin.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
+        admin.setRoles(List.of(adminRole));
 
         List<Rent> rents = new ArrayList<>();
 
@@ -172,9 +182,14 @@ public class RentServiceTest {
         // Arrange
         Long userId = 1L;
 
+        Role userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName("USER");
+
         LibraryUser user = new LibraryUser();
         user.setId(userId);
-        user.setRoles(List.of(Role.builder().name(("USER")).build()));
+//        user.setRoles(List.of(Role.builder().name(("USER")).build()));
+        user.setRoles(List.of(userRole));
 
         List<Rent> rents = new ArrayList<>();
 
