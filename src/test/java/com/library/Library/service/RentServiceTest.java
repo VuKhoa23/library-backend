@@ -144,11 +144,11 @@ public class RentServiceTest {
         List<Rent> rents = new ArrayList<>();
 
         Rent rent1 = new Rent();
-        Book book1 = new Book();
+        Book book1 = Book.builder().build();
         rent1.setBook(book1);
 
         Rent rent2 = new Rent();
-        Book book2 = new Book();
+        Book book2 = Book.builder().build();
         rent2.setBook(book2);
 
         rents.add(rent1);
@@ -179,11 +179,11 @@ public class RentServiceTest {
         List<Rent> rents = new ArrayList<>();
 
         Rent rent1 = new Rent();
-        Book book1 = new Book();
+        Book book1 = Book.builder().build();
         rent1.setBook(book1);
 
         Rent rent2 = new Rent();
-        Book book2 = new Book();
+        Book book2 = Book.builder().build();
         rent2.setBook(book2);
 
         rents.add(rent1);

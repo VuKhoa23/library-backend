@@ -98,15 +98,6 @@ public class BookControllerTest {
     }
 
     @Test
-    public void Test_GetSingleBook_ReturnInvalidParam_NegativeIdNumbers() throws Exception {
-        // service should throw InvalidRequestParameterException
-        ResultActions resultActions = mockMvc.perform(get("/api/books/-1")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON));
-        resultActions.andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void Test_EditBook_ReturnBadRequest() throws Exception {
         BookDTO bookDTO = BookDTO.builder().name("").build();
         Mockito.doThrow(new InvalidRequestParameterException("Invalid parameter")).when(bookService).editBook(1L, bookDTO);

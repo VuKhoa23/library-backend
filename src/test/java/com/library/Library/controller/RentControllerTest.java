@@ -116,8 +116,8 @@ public class RentControllerTest {
         // Arrange
         Long userId = 1L;
         List<Book> books = new ArrayList<>();
-        books.add(new Book());
-        books.add(new Book());
+        books.add(Book.builder().build());
+        books.add(Book.builder().build());
 
         when(rentService.getRentedBooks(userId)).thenReturn(books);
 
