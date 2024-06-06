@@ -149,7 +149,7 @@ public class RentControllerTest {
 
     @Test
     @WithMockUser(authorities = {"USER"})
-    public void GetRentedBook_UserNotFound_Return401() throws Exception {
+    public void GetRentedBook_UserNotFound_Return404() throws Exception {
         // Arrange
         Long userId = 1L;
         doThrow(UserNotFoundException.class).when(rentService).getRentedBooks(userId);
