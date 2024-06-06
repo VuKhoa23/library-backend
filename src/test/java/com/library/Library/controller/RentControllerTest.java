@@ -1,7 +1,10 @@
 package com.library.Library.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.library.Library.dto.RentDTO;
+import com.library.Library.entity.Book;
 import com.library.Library.exception.BookNotFoundException;
+import com.library.Library.exception.GetRentedBookDeniedException;
 import com.library.Library.exception.NoMoreBookException;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.service.RentService;
@@ -13,14 +16,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,7 +56,7 @@ public class RentControllerTest {
 
     @Test
     public void rentBookNotFound() throws Exception {
-        Mockito.doThrow(new BookNotFoundException()).when(rentService).userRentBook(rentDTO);
+        doThrow(new BookNotFoundException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
@@ -61,7 +70,7 @@ public class RentControllerTest {
 
     @Test
     public void rentNotEnoughBook() throws Exception {
-        Mockito.doThrow(new NoMoreBookException()).when(rentService).userRentBook(rentDTO);
+        doThrow(new NoMoreBookException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
@@ -75,7 +84,7 @@ public class RentControllerTest {
 
     @Test
     public void rentUserNotFound() throws Exception {
-        Mockito.doThrow(new UserNotFoundException()).when(rentService).userRentBook(rentDTO);
+        doThrow(new UserNotFoundException()).when(rentService).userRentBook(rentDTO);
 
         ResultActions resultActions = mockMvc.perform(post("/api/rent")
                 .with(csrf())
@@ -99,6 +108,59 @@ public class RentControllerTest {
 
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Book rented successfully!"));
+    }
+
+    @Test
+    @WithMockUser(authorities = {"USER", "ADMIN"})
+    public void GetRentedBooksSuccess() throws Exception {
+        // Arrange
+        Long userId = 1L;
+        List<Book> books = new ArrayList<>();
+        books.add(new Book());
+        books.add(new Book());
+
+        when(rentService.getRentedBooks(userId)).thenReturn(books);
+
+        // Act
+        ResultActions resultActions = mockMvc.perform(get("/api/rent/{userId}", userId)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    @WithMockUser(authorities = {"USER"})
+    public void GetRentedBookDenied_Return403() throws Exception {
+        // Arrange
+        Long userId = 1L;
+        doThrow(GetRentedBookDeniedException.class).when(rentService).getRentedBooks(userId);
+
+        // Act
+        ResultActions resultActions = mockMvc.perform(get("/api/rent/{userId}", userId)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert
+        resultActions.andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"USER"})
+    public void GetRentedBook_UserNotFound_Return401() throws Exception {
+        // Arrange
+        Long userId = 1L;
+        doThrow(UserNotFoundException.class).when(rentService).getRentedBooks(userId);
+
+        // Act
+        ResultActions resultActions = mockMvc.perform(get("/api/rent/{userId}", userId)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Assert
+        resultActions.andExpect(status().isNotFound());
     }
 }
 
