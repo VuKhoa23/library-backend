@@ -13,8 +13,9 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "books")
+@Builder
+@AllArgsConstructor
 public class Book {
-    public Book(){}
     public Book(String name, Category category){
         this.name = name;
         this.category = category;
