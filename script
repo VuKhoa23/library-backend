@@ -1,3 +1,4 @@
+DROP USER 'root'@'%';
 CREATE USER 'root'@'%' IDENTIFIED BY 'root';
 GRANT ALL PRIVILEGES ON library.* TO 'root'@'%';
 FLUSH PRIVILEGES;
