@@ -9,7 +9,7 @@ import com.library.Library.exception.InvalidRequestParameterException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.CategoryRepository;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
