@@ -3,9 +3,11 @@ package com.library.Library.controller;
 
 import com.library.Library.dto.*;
 import com.library.Library.entity.Role;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.RoleRepository;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.security.JwtGenerator;
+import com.library.Library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +33,21 @@ public class AuthController {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager,
                           UserRepository userRepository,
                           RoleRepository roleRepository,
                           PasswordEncoder passwordEncoder,
-                          JwtGenerator jwtGenerator) {
+                          JwtGenerator jwtGenerator,
+                          UserService userService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtGenerator = jwtGenerator;
+        this.userService = userService;
     }
 
     @PostMapping("register")
@@ -71,7 +76,8 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(authentication.isAuthenticated());
             String token = jwtGenerator.generateToken(authentication);
-            return new ResponseEntity<>(AuthResponseDTO.builder().tokenType("Bearer ").accessToken(token).message("Success").build(), HttpStatus.OK);
+            Long userId = userService.getUserIdByUsername(loginDTO.getUsername());
+            return new ResponseEntity<>(AuthResponseDTO.builder().tokenType("Bearer ").accessToken(token).message("Success").userId(userId).build(), HttpStatus.OK);
 
         }catch (AuthenticationException e){
             return new ResponseEntity<>(AuthResponseDTO.builder().message("Bad credentials").build(), HttpStatus.BAD_REQUEST);
