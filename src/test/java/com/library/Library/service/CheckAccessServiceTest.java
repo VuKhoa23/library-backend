@@ -4,7 +4,7 @@ import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Role;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.UserRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
