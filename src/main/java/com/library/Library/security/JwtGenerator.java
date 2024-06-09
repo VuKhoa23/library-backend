@@ -1,5 +1,6 @@
 package com.library.Library.security;
 
+import com.library.Library.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,6 +29,9 @@ public class JwtGenerator {
     }
     @Autowired
     CustomUserDetailsService userDetailsService;
+    @Autowired
+    UserService userService;
+
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
         Date currentDate = new Date();
@@ -40,11 +44,13 @@ public class JwtGenerator {
             tempRoles.add(grantedAuthority.getAuthority());
         }
         userDetailsDTO.setRoles(tempRoles);
+        Long userId = userService.getUserIdByUsername(username);
         String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(currentDate)
                 .setExpiration(expiredDate)
                 .claim("user-details", userDetailsDTO)
+                .claim("userId", userId)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
         return token;

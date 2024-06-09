@@ -33,21 +33,18 @@ public class AuthController {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-    private UserService userService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager,
                           UserRepository userRepository,
                           RoleRepository roleRepository,
                           PasswordEncoder passwordEncoder,
-                          JwtGenerator jwtGenerator,
-                          UserService userService) {
+                          JwtGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtGenerator = jwtGenerator;
-        this.userService = userService;
     }
 
     @PostMapping("register")
@@ -76,8 +73,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(authentication.isAuthenticated());
             String token = jwtGenerator.generateToken(authentication);
-            Long userId = userService.getUserIdByUsername(loginDTO.getUsername());
-            return new ResponseEntity<>(AuthResponseDTO.builder().tokenType("Bearer ").accessToken(token).message("Success").userId(userId).build(), HttpStatus.OK);
+            return new ResponseEntity<>(AuthResponseDTO.builder().tokenType("Bearer ").accessToken(token).message("Success").build(), HttpStatus.OK);
 
         }catch (AuthenticationException e){
             return new ResponseEntity<>(AuthResponseDTO.builder().message("Bad credentials").build(), HttpStatus.BAD_REQUEST);
