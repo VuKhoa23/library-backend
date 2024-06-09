@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class Role {
+    public Role(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
