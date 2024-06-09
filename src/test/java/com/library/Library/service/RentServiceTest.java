@@ -200,4 +200,9 @@ public class RentServiceTest {
         assertTrue(books.contains(book1));
         assertTrue(books.contains(book2));
     }
+
+    @Test
+    public void FailOnPurpose(){
+        assertEquals(1, 2);
+    }
 }
