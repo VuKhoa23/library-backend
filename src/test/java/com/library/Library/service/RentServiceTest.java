@@ -121,7 +121,7 @@ public class RentServiceTest {
 
         LibraryUser currentUser = new LibraryUser();
         currentUser.setId(currentUserId);
-        currentUser.setRoles(List.of(Role.builder().name(("USER")).build()));
+        currentUser.setRoles(List.of(new Role("USER")));
 
         when(checkAccessService.getCurrentUser()).thenReturn(currentUser);
         when(checkAccessService.isAdmin(currentUser)).thenReturn(false);
@@ -139,7 +139,7 @@ public class RentServiceTest {
 
         LibraryUser admin = new LibraryUser();
         admin.setId(adminId);
-        admin.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
+        admin.setRoles(List.of(new Role("ADMIN")));
 
         List<Rent> rents = new ArrayList<>();
 
@@ -174,7 +174,7 @@ public class RentServiceTest {
 
         LibraryUser user = new LibraryUser();
         user.setId(userId);
-        user.setRoles(List.of(Role.builder().name(("USER")).build()));
+        user.setRoles(List.of(new Role("USER")));
 
         List<Rent> rents = new ArrayList<>();
 

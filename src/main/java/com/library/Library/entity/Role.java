@@ -8,9 +8,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Builder
-@AllArgsConstructor
 public class Role {
+    public Role(String name){
+        this.name = name;
+    }
+    public Role(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
