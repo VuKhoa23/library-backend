@@ -4,14 +4,16 @@ import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Role;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.UserRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class CheckAccessServiceTest {
 
     @Mock
