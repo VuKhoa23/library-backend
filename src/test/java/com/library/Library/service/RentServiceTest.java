@@ -9,11 +9,15 @@ import com.library.Library.exception.*;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.RentRepository;
 import com.library.Library.repository.UserRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +30,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RentServiceTest {
     @Mock
     private BookRepository bookRepository;
@@ -119,14 +123,9 @@ public class RentServiceTest {
         Long requestedUserId = 1L;
         Long currentUserId = 2L;
 
-        Role userRole = new Role();
-        userRole.setId(1L);
-        userRole.setName("USER");
-
         LibraryUser currentUser = new LibraryUser();
         currentUser.setId(currentUserId);
-//        currentUser.setRoles(List.of(Role.builder().name(("USER")).build()));
-        currentUser.setRoles(List.of(userRole));
+        currentUser.setRoles(List.of(new Role("USER")));
 
         when(checkAccessService.getCurrentUser()).thenReturn(currentUser);
         when(checkAccessService.isAdmin(currentUser)).thenReturn(false);
@@ -142,14 +141,9 @@ public class RentServiceTest {
         Long userId = 1L;
         Long adminId = 2L;
 
-        Role adminRole = new Role();
-        adminRole.setId(1L);
-        adminRole.setName("ADMIN");
-
         LibraryUser admin = new LibraryUser();
         admin.setId(adminId);
-//        admin.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
-        admin.setRoles(List.of(adminRole));
+        admin.setRoles(List.of(new Role("ADMIN")));
 
         List<Rent> rents = new ArrayList<>();
 
@@ -182,14 +176,9 @@ public class RentServiceTest {
         // Arrange
         Long userId = 1L;
 
-        Role userRole = new Role();
-        userRole.setId(1L);
-        userRole.setName("USER");
-
         LibraryUser user = new LibraryUser();
         user.setId(userId);
-//        user.setRoles(List.of(Role.builder().name(("USER")).build()));
-        user.setRoles(List.of(userRole));
+        user.setRoles(List.of(new Role("USER")));
 
         List<Rent> rents = new ArrayList<>();
 
@@ -214,5 +203,10 @@ public class RentServiceTest {
         assertEquals(2, books.size());
         assertTrue(books.contains(book1));
         assertTrue(books.contains(book2));
+    }
+
+    @Test
+    public void FailOnPurpose(){
+        assertEquals(1, 2);
     }
 }

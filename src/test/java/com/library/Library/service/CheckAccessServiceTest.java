@@ -4,14 +4,18 @@ import com.library.Library.entity.LibraryUser;
 import com.library.Library.entity.Role;
 import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.UserRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CheckAccessServiceTest {
 
     @Mock
@@ -68,11 +72,7 @@ public class CheckAccessServiceTest {
     @Test
     public void ReturnTrue_IsAdmin(){
         LibraryUser user = new LibraryUser();
-        Role adminRole = new Role();
-        adminRole.setId(1L);
-        adminRole.setName("ADMIN");
-//        user.setRoles(List.of(Role.builder().name(("ADMIN")).build()));
-        user.setRoles(List.of(adminRole));
+        user.setRoles(List.of(new Role("ADMIN")));
 
         boolean isAdmin = checkAccessService.isAdmin(user);
         assertEquals(isAdmin, true);
@@ -81,11 +81,8 @@ public class CheckAccessServiceTest {
     @Test
     public void ReturnFalse_IsNotAdmin(){
         LibraryUser user = new LibraryUser();
-        Role userRole = new Role();
-        userRole.setId(1L);
-        userRole.setName("USER");
-//        user.setRoles(List.of(Role.builder().name(("USER")).build()));
-        user.setRoles(List.of(userRole));
+        user.setRoles(List.of(new Role("USER")));
+
         boolean isAdmin = checkAccessService.isAdmin(user);
         assertEquals(isAdmin, false);
     }

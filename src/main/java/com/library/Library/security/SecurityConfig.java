@@ -40,9 +40,6 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
-                    // auth.requestMatchers("/api/rent/**").hasAuthority("USER");
-                    // auth.requestMatchers(HttpMethod.POST, "/api/rent/**").hasAuthority("USER");
-                    // auth.requestMatchers(HttpMethod.GET, "/api/rent/**").hasAnyAuthority("USER", "ADMIN");
                     auth.requestMatchers("/api/rent/**").hasAnyAuthority("USER", "ADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/api/books/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.PUT, "/api/books/**").hasAuthority("ADMIN");
