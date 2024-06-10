@@ -19,8 +19,8 @@ pipeline {
 
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
-                    sh 'docker build -t vukhoa23/springboot .'
-                    sh 'docker push vukhoa23/springboot'
+                    sh 'docker build -t vukhoa23/library .'
+                    sh 'docker push vukhoa23/library'
                 }
             }
         }
@@ -28,12 +28,12 @@ pipeline {
         stage('Deploy Spring Boot to DEV') {
             steps {
                 echo 'Deploying and cleaning'
-                sh 'docker image pull vukhoa23/springboot'
-                sh 'docker container stop khoa-springboot || echo "this container does not exist" '
+                sh 'docker image pull vukhoa23/library'
+                sh 'docker container stop khoa-library || echo "this container does not exist" '
                 sh 'docker network create dev || echo "this network exists"'
                 sh 'echo y | docker container prune '
 
-                sh 'docker container run -d --rm --name khoa-springboot -p 8081:8080 --network dev vukhoa23/springboot'
+                sh 'docker container run -d --rm --name khoa-library -p 8081:8080 --network dev vukhoa23/library'
             }
         }
  
