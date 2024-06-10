@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name = "books")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     public Book(String name, Category category){
         this.name = name;

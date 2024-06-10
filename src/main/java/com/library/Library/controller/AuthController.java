@@ -3,9 +3,11 @@ package com.library.Library.controller;
 
 import com.library.Library.dto.*;
 import com.library.Library.entity.Role;
+import com.library.Library.exception.UserNotFoundException;
 import com.library.Library.repository.RoleRepository;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.security.JwtGenerator;
+import com.library.Library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
