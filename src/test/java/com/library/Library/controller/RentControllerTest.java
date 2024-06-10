@@ -163,10 +163,5 @@ public class RentControllerTest {
         // Assert
         resultActions.andExpect(status().isNotFound());
     }
-
-    @Test
-    public void FailOnPurpose(){
-        assertEquals(1, 2);
-    }
 }
 
