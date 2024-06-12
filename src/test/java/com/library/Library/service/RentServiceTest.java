@@ -205,9 +205,4 @@ public class RentServiceTest {
         assertTrue(books.contains(book2));
     }
 
-    @Test
-    void error(){
-        assertEquals(1, 2);
-    }
-
 }
