@@ -5,7 +5,6 @@ on:
     branches: [ec2-github-actions]
 
 jobs:
-
   build:
     runs-on: [ubuntu-latest]
     steps:
@@ -27,9 +26,11 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [github-actions]
+    runs-on: [aws-ec2]
     steps:
       - name: Pull image from dockerhub
         run: docker pull vukhoa23/github-actions:latest
+      - name: Delete old container
+        run: docker rm -f github-actions-container
       - name: Run container
         run: docker container run -d --rm --name github-actions-container vukhoa23/github-actions -p 8081:8080
