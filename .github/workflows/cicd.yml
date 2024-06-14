@@ -33,4 +33,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f github-actions-container
       - name: Run container
-        run: docker run -d -p 8080:8080 github-actions-container vukhoa23/github-actions
+        run: docker run -d --name github-actions-container -p 8080:8080 vukhoa23/github-actions:latest
