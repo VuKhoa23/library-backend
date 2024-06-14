@@ -20,7 +20,7 @@ jobs:
       - name: Login to dockerhub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Build docker image
-        run: docker build -t vukhoa23/github-actions
+        run: docker build -t vukhoa23/github-actions .
       - name: Push to dockerhub
         run: docker push vukhoa23/github-actions:latest
 
