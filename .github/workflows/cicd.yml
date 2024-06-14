@@ -5,6 +5,7 @@ on:
     branches: [ec2-github-actions]
 
 jobs:
+
   build:
     runs-on: [ubuntu-latest]
     steps:
