@@ -63,8 +63,8 @@ public class BookService {
         if (quantity == null){
             throw new InvalidRequestParameterException("Please provide the quantity you want to add");
         }
-        if (quantity <= 0L){
-            throw new InvalidRequestParameterException("Quantity must be greater than 0");
+        if (quantity <= 1L){
+            throw new InvalidRequestParameterException("Quantity must be greater than 1");
         }
         Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         book.setQuantity(book.getQuantity() + quantity);
