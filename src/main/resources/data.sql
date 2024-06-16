@@ -11,3 +11,7 @@ INSERT INTO users (username, password) VALUES
 INSERT INTO users_roles(user_id, role_id) VALUES
     (1, 2),
     (2, 1);
+
+INSERT INTO categories (name) VALUES ('Fiction');
+
+INSERT INTO books (name, category_id, quantity) VALUES ('Harry Potter', 1, 1)
