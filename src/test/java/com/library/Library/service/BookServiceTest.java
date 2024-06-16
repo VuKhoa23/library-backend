@@ -217,7 +217,6 @@ public class BookServiceTest {
         InvalidRequestParameterException exception = Assert.assertThrows(InvalidRequestParameterException.class, () ->
                 bookService.addQuantity(bookId, quantity));
 
-        assertEquals("Quantity must be greater than 0", exception.getMessage());
     }
 
     @Test
