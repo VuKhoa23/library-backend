@@ -251,5 +251,4 @@ public class BookServiceTest {
         verify(bookRepository, times(1)).findById(1L);
         verify(bookRepository, times(1)).save(any(Book.class));
     }
-
 }
