@@ -205,4 +205,8 @@ public class RentServiceTest {
         assertTrue(books.contains(book2));
     }
 
+    @Test
+    public void failedCase(){
+        assertEquals(1, 2);
+    }
 }
