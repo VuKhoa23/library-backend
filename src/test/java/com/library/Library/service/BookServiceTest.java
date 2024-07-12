@@ -250,7 +250,7 @@ public class BookServiceTest {
         verify(bookRepository, times(1)).findById(1L);
         verify(bookRepository, times(1)).save(any(Book.class));
     }
-    
+
     @Test
     public void AddBook_QuantityGreaterThanTwo_ThrowError(){
         Long quantity = 1L;
@@ -258,4 +258,5 @@ public class BookServiceTest {
         InvalidRequestParameterException exception = Assert.assertThrows(InvalidRequestParameterException.class, () ->
                 bookService.addQuantity(1L, quantity));
     }
+
 }
