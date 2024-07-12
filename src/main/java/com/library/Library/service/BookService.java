@@ -44,6 +44,7 @@ public class BookService {
         return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
     }
 
+
     public Book editBook(Long id, BookDTO bookDTO) throws BookNotFoundException, InvalidRequestParameterException, CategoryNotFoundException {
         Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         if (bookDTO.getName() == null || bookDTO.getName().isEmpty()) {
