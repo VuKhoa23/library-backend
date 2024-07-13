@@ -14,6 +14,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TestSelenium {
 
     private WebDriver driver;
@@ -40,11 +41,12 @@ public class TestSelenium {
         driver.quit();
     }
 
+    @Test
     public void loginTest() throws InterruptedException {
         Thread.sleep(1000);
 
         // Open the library application
-        driver.get("http://localhost:3000/"); // Replace with your app's URL
+        driver.get("http://13.213.13.47:3000/"); // Replace with your app's URL
 
         // Find and click the login button
         WebElement loginButton = driver.findElement(By.cssSelector("button[data-modal-target='login-modal'][data-modal-toggle='login-modal']"));
