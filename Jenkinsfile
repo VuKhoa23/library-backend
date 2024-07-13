@@ -32,7 +32,7 @@ pipeline {
                 sh 'docker container stop khoa-library || echo "this container does not exist" '
                 sh 'docker network create dev || echo "this network exists"'
                 sh 'echo y | docker container prune '
-                sh 'docker container run -d --rm --name khoa-library -p 8081:8080 --network dev vukhoa23/library'
+                sh 'docker container run -d --rm --name khoa-library -p 8081:8081 vukhoa23/library'
             }
         }
  
