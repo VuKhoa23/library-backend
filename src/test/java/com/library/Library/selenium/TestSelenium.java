@@ -73,5 +73,4 @@ public class TestSelenium {
         String buttonText = welcomeButton.getText();
         assertTrue(buttonText.contains("Welcome!"));
     }
-
 }
