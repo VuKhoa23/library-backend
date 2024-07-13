@@ -22,7 +22,7 @@ public class TestSelenium {
     @BeforeEach
     public void setUp() {
         // Set up WebDriverManager
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().browserInDocker();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
