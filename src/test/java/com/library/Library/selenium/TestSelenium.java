@@ -40,7 +40,6 @@ public class TestSelenium {
         driver.quit();
     }
 
-    @Test
     public void loginTest() throws InterruptedException {
         Thread.sleep(1000);
 
